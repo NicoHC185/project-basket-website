@@ -31,123 +31,123 @@ import Was from 'icons/was'
 
 const arr = [
   {
-    code: 'atl',
+    code: 'ATL',
     logo: <Atl></Atl>
   },
   {
-    code: 'brk',
+    code: 'BRK',
     logo: <Brk></Brk>
   },
   {
-    code: 'bos',
+    code: 'BOS',
     logo: <Bos></Bos>
   },
   {
-    code: 'cho',
+    code: 'CHO',
     logo: <Cho></Cho>
   },
   {
-    code: 'chi',
+    code: 'CHI',
     logo: <Chi></Chi>
   },
   {
-    code: 'cle',
+    code: 'CLE',
     logo: <Cle></Cle>
   },
   {
-    code: 'dal',
+    code: 'DAL',
     logo: <Dal></Dal>
   },
   {
-    code: 'den',
+    code: 'DEN',
     logo: <Den></Den>
   },
   {
-    code: 'det',
+    code: 'DET',
     logo: <Det></Det>
   },
   {
-    code: 'gsw',
+    code: 'GSW',
     logo: <Gsw></Gsw>
   },
   {
-    code: 'hou',
+    code: 'HOU',
     logo: <Hou></Hou>
   },
   {
-    code: 'ind',
+    code: 'IND',
     logo: <Ind></Ind>
   },
   {
-    code: 'lac',
+    code: 'LAC',
     logo: <Lac></Lac>
   },
   {
-    code: 'lal',
+    code: 'LAL',
     logo: <Lal></Lal>
   },
   {
-    code: 'mem',
+    code: 'MEM',
     logo: <Mem></Mem>
   },
   {
-    code: 'mia',
+    code: 'MIA',
     logo: <Mia></Mia>
   },
   {
-    code: 'mil',
+    code: 'MIL',
     logo: <Mil></Mil>
   },
   {
-    code: 'min',
+    code: 'MIN',
     logo: <Min></Min>
   },
   {
-    code: 'nop',
+    code: 'NOP',
     logo: <Nop></Nop>
   },
   {
-    code: 'nyk',
+    code: 'NYK',
     logo: <Nyk></Nyk>
   },
   {
-    code: 'okc',
+    code: 'OKC',
     logo: <Okc></Okc>
   },
   {
-    code: 'orl',
+    code: 'ORL',
     logo: <Orl></Orl>
   },
   {
-    code: 'phi',
+    code: 'PHI',
     logo: <Phi></Phi>
   },
   {
-    code: 'pho',
+    code: 'PHO',
     logo: <Pho></Pho>
   },
   {
-    code: 'por',
+    code: 'POR',
     logo: <Por></Por>
   },
   {
-    code: 'sac',
+    code: 'SAC',
     logo: <Sac></Sac>
   },
   {
-    code: 'sas',
+    code: 'SAS',
     logo: <Sas></Sas>
   },
   {
-    code: 'tor',
+    code: 'TOR',
     logo: <Tor></Tor>
   },
   {
-    code: 'uta',
+    code: 'UTA',
     logo: <Uta></Uta>
   },
   {
-    code: 'was',
+    code: 'WAS',
     logo: <Was></Was>
   },
 ]
