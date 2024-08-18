@@ -1,10 +1,10 @@
 'use client'
 import { Grid, Skeleton, Stack, Typography } from '@mui/material'
-import axios from 'axios'
 import MainCard from 'components/cards/MainCard'
 import { IConference } from 'interfaces'
 import { useEffect, useState } from 'react'
 import TeamCard from './TeamCard'
+import { axiosService } from 'services/axios'
 
 const Teams = () => {
 
@@ -26,8 +26,8 @@ const Teams = () => {
 
   const handleGetTeam = async () => {
     setLoadTeams(true)
-    const { data } = await axios.get(`/api/teams`)
-    setConferences(data)
+    const { data } = await axiosService.get(`/teams`)
+    setConferences(data.response)
     setLoadTeams(false)
   }
 
