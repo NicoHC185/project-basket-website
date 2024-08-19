@@ -1,17 +1,11 @@
 import { useDispatch } from "react-redux";
-// material-ui
 import { styled, Theme, useTheme } from "@mui/material/styles";
-import { Box, CssBaseline, Toolbar } from "@mui/material";
-
-// project imports
+import { Box } from "@mui/material";
 import Breadcrumbs from "components/extended/Breadcrumbs";
-import Header from "./Header";
 import Sidebar from "./Sidebar";
 import navigation from "menu-items";
 import { drawerWidth } from "store/constant";
 import { SET_MENU } from "store/actions";
-
-// assets
 import { IconChevronRight } from "@tabler/icons-react";
 import { useAppSelector } from "hooks";
 import { RootState } from "store";
@@ -107,10 +101,7 @@ const MainLayout = ({ children }: { children: JSX.Element }) => {
       />
 
       {/* main content */}
-      <Main
-        theme={theme}
-        open={leftDrawerOpened}
-      >
+      <Main theme={theme} open={leftDrawerOpened}>
         <Breadcrumbs
           separator={<IconChevronRight />}
           navigation={navigation}
