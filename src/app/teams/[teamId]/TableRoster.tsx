@@ -6,23 +6,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { IInfoPlayer } from "interfaces";
-import { Theme, useTheme } from "@mui/material/styles";
+import { styled, Theme, useTheme } from "@mui/material/styles";
 
-const TableCellCustom = ({ children }: { children: any }) => {
-  const theme: Theme = useTheme();
-  const borderRow = `1px solid ${theme.palette.primary.dark}`;
-  return (
-    <TableCell
-      sx={{
-        borderTop: borderRow,
-        borderBottom: borderRow,
-        "&:last-child td, &:last-child th": { border: 0 },
-      }}
-    >
-      {children}
-    </TableCell>
-  );
-};
+const TableCellCustom = styled(TableCell)(({ theme }: { theme: Theme }) => ({
+  borderTop: `1px solid ${theme.palette.primary.dark}`,
+  borderBottom: `1px solid ${theme.palette.primary.dark}`,
+  "&:last-child td, &:last-child th": { border: 0 },
+}));
 
 export default function TableRoster({ data }: { data: IInfoPlayer[] }) {
   const theme: Theme = useTheme();
@@ -73,7 +63,6 @@ export default function TableRoster({ data }: { data: IInfoPlayer[] }) {
             <TableRow
               key={row.name}
               sx={{
-                // border: `1px solid ${theme.palette.primary.dark}`,
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
             >

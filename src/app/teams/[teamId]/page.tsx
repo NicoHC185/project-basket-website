@@ -24,6 +24,7 @@ const Team = () => {
 
   useEffect(() => {
     Promise.all([getInfoTeam(), getRoster()]);
+    // eslint-disable-next-line
   }, []);
 
   const getRoster = async () => {
