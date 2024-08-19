@@ -23,7 +23,7 @@ const icons = {
 
 const NBA: IMenu = {
   id: "nba",
-  title: "NBA",
+  title: "Menu",
   type: "group",
   icon: icons.IconDashboard,
   children: [
