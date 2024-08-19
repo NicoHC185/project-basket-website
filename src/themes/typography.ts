@@ -90,7 +90,7 @@ export default function themeTypography(theme: IThemeServer) {
       minHeight: "calc(100vh - 88px)",
       flexGrow: 1,
       padding: "24px",
-      marginTop: "88px",
+      // marginTop: "88px",
     },
     menuCaption: {
       fontSize: "0.875rem",

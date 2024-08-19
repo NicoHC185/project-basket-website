@@ -74,9 +74,9 @@ const Sidebar = ({ drawerOpen }: { drawerOpen: boolean }) => {
             borderTopRightRadius: borderRadius,
             borderBottomRightRadius: borderRadius,
             borderRight: 'none',
-            [theme.breakpoints.up('md')]: {
-              top: '83px'
-            }
+            // [theme.breakpoints.up('md')]: {
+            //   top: '83px'
+            // }
           }
         }}
         ModalProps={{ keepMounted: true }}

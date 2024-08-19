@@ -1,40 +1,39 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 // material-ui
-import { styled, Theme, useTheme } from '@mui/material/styles';
-import { AppBar, Box, CssBaseline, Toolbar } from '@mui/material';
+import { styled, Theme, useTheme } from "@mui/material/styles";
+import { Box, CssBaseline, Toolbar } from "@mui/material";
 
 // project imports
-import Breadcrumbs from 'components/extended/Breadcrumbs';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import navigation from 'menu-items';
-import { drawerWidth } from 'store/constant';
-import { SET_MENU } from 'store/actions';
+import Breadcrumbs from "components/extended/Breadcrumbs";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import navigation from "menu-items";
+import { drawerWidth } from "store/constant";
+import { SET_MENU } from "store/actions";
 
 // assets
-import { IconChevronRight } from '@tabler/icons-react';
-import { useAppSelector } from 'hooks';
-import { RootState } from 'store';
+import { IconChevronRight } from "@tabler/icons-react";
+import { useAppSelector } from "hooks";
+import { RootState } from "store";
 
 declare module "@mui/material/styles" {
   interface Theme {
     typography: {
       mainContent: {
-        // backgroundColor: string,
-        width: string,
-        minHeight: string,
-        flexGrow: string,
-        padding: string,
-        marginTop: string,
-        marginRight: string,
+        width: string;
+        minHeight: string;
+        flexGrow: string;
+        padding: string;
+        marginTop: string;
+        marginRight: string;
       };
-    }
+    };
   }
 }
 
 // styles
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
-  ({ theme, open }: { theme: Theme, open: boolean }) => ({
+  ({ theme, open }: { theme: Theme; open: boolean }) => ({
     backgroundColor: theme.palette.background.default,
     ...theme.typography.mainContent,
     ...(!open && {
@@ -79,14 +78,14 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   })
 );
 
-
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = ({ children }: { children: JSX.Element }) => {
   const theme = useTheme();
   // Handle left drawer
-  const leftDrawerOpened = useAppSelector((state: RootState) => state.customizationReducer?.opened);
-  // const { drawerType, container, layout } = useConfig();
+  const leftDrawerOpened = useAppSelector(
+    (state: RootState) => state.customizationReducer?.opened
+  );
   const dispatch = useDispatch();
   const handleLeftDrawerToggle = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
@@ -95,63 +94,32 @@ const MainLayout = ({ children }: { children: JSX.Element }) => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        backgroundColor: theme.palette.background.default
-      }}>
-      <CssBaseline />
-      {/* header */}
-      <AppBar
-        enableColorOnDark
-        position="fixed"
-        color="inherit"
-        elevation={0}
-        sx={{
-          bgcolor: theme.palette.primary.dark,
-          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
-        }}
-      >
-        <Toolbar>
-          <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
-        </Toolbar>
-      </AppBar>
+        display: "flex",
+        backgroundColor: theme.palette.background.default,
+      }}
+    >
+      {/* <CssBaseline /> */}
 
       {/* drawer */}
-      <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+      <Sidebar
+        drawerOpen={leftDrawerOpened}
+        drawerToggle={handleLeftDrawerToggle}
+      />
 
       {/* main content */}
       <Main
         theme={theme}
         open={leftDrawerOpened}
-      // sx={{ ml: !drawerOpen && "-188px !important" }}
       >
-        {/* breadcrumb */}
-        {/* {container && (
-          <Container maxWidth="lg">
-            <Breadcrumbs
-              separator={IconChevronRight}
-              navigation={navigation}
-              icon
-              title
-              rightAlign
-            />
-            {children}
-          </Container>
-        )}
-        {!container && (
-        )} */}
-        <>
-          <Breadcrumbs
-            separator={<IconChevronRight />}
-            navigation={navigation}
-            icon
-            title
-            rightAlign
-          />
-          {children}
-        </>
+        <Breadcrumbs
+          separator={<IconChevronRight />}
+          navigation={navigation}
+          icon
+          title
+          rightAlign
+        />
+        {children}
       </Main>
-
-      {/* <Customization /> */}
     </Box>
   );
 };
