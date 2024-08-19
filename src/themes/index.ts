@@ -43,7 +43,7 @@ export const theme = (customization: ICustomRedux) => {
     paper: color.paper,
     backgroundDefault: color.primaryLight,
     background: color.primaryLight,
-    darkTextPrimary: color.grey700,
+    darkTextPrimary: color.grey900,
     darkTextSecondary: color.grey500,
     textDark: color.grey900,
     menuSelected: color.grey900,
