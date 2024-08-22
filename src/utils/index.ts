@@ -1,5 +1,5 @@
-import Logos from "icons";
+import Logos, { ILogoTeam } from "icons";
 
 export const findLogo = (code: string) => {
-  return Logos.find((el) => el.code === code)?.logo;
+  return Logos.find((el: ILogoTeam) => el.code === code)?.logo;
 };
