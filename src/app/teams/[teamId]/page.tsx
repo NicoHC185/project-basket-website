@@ -1,6 +1,6 @@
 "use client";
 
-import { Skeleton, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import MainCard from "components/cards/MainCard";
 import { IInfoPlayer, IInfoTeam } from "interfaces";
 import moment from "moment";
@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableRoster from "./TableRoster";
 import SubCard from "components/cards/SubCard";
+import LoadImg from "components/load/Load";
 
 const url = process.env.NEXT_PUBLIC_URL ?? "http://localhost:8000/api";
 
@@ -71,22 +72,25 @@ const Team = () => {
     );
   };
 
-  return load ? (
-    <Skeleton variant="rounded" width={"100%"} height={"60vh"} />
-  ) : (
+  return (
     <MainCard title={infoTeam?.name}>
-      <SubCard title="Info team">
-        <Stack>
-          <Typography>Record: {infoTeam?.record}</Typography>
-          <Typography>Coach: {infoTeam?.coach}</Typography>
-          <Typography>Executive: {infoTeam?.executive}</Typography>
-        </Stack>
-      </SubCard>
-
-      <Typography variant="h3" sx={{ my: 3 }}>
-        Roster
-      </Typography>
-      <TableRoster data={roster}></TableRoster>
+      {load ? (
+        <LoadImg></LoadImg>
+      ) : (
+        <>
+          <SubCard title="Info team">
+            <Stack>
+              <Typography>Record: {infoTeam?.record}</Typography>
+              <Typography>Coach: {infoTeam?.coach}</Typography>
+              <Typography>Executive: {infoTeam?.executive}</Typography>
+            </Stack>
+          </SubCard>
+          <Typography variant="h3" sx={{ my: 3 }}>
+            Roster
+          </Typography>
+          <TableRoster data={roster}></TableRoster>
+        </>
+      )}
     </MainCard>
   );
 };
