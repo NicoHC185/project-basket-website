@@ -28,19 +28,19 @@ const NBA: IMenu = {
   icon: icons.IconDashboard,
   children: [
     {
-      id: "games",
-      title: "Games",
-      type: "item",
-      url: "games",
-      icon: icons.IconVs,
-      breadcrumbs: false,
-    },
-    {
       id: "teams",
       title: "Teams",
       type: "item",
       url: "teams",
       icon: icons.IconUsersGroup,
+      breadcrumbs: false,
+    },
+    {
+      id: "games",
+      title: "Games",
+      type: "item",
+      url: "games",
+      icon: icons.IconVs,
       breadcrumbs: false,
     },
     {
