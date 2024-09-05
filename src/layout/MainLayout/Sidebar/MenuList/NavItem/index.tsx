@@ -59,7 +59,9 @@ const NavItem = ({ item, level }: { item: IMenu; level: number }) => {
 
   const itemHandler = (id: string) => {
     dispatch({ type: MENU_OPEN, id });
-    if (matchesSM) dispatch({ type: SET_MENU, opened: false });
+    if (matchesSM) {
+      dispatch({ type: SET_MENU, opened: false });
+    }
   };
 
   // active menu item on page load

@@ -1,14 +1,18 @@
 "use client";
 import { Grid, Stack, Typography } from "@mui/material";
 import MainCard from "components/cards/MainCard";
-import { IConference } from "interfaces";
 import { useEffect, useState } from "react";
 import TeamCard from "./TeamCard";
 import LoadImg from "components/load/Load";
 import { axiosService } from "services/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setValuesTeams } from "store/slice/teams";
+import { RootState } from "store";
+import { IConference } from "interfaces";
 
 const Teams = () => {
-  const [conferences, setConferences] = useState<IConference[]>([]);
+  const { conferences } = useSelector((state: RootState) => state.teams);
+  const dispatch = useDispatch();
   const [loadTeams, setLoadTeams] = useState(true);
 
   useEffect(() => {
@@ -26,9 +30,14 @@ const Teams = () => {
 
   const handleGetTeam = async () => {
     setLoadTeams(true);
-    const { data } = await axiosService.get(`/teams`)
-    setConferences(data.response)
-    setLoadTeams(false)
+    console.log(conferences);
+    if (conferences.length > 0) {
+      setLoadTeams(false);
+    } else {
+      const { data } = await axiosService.get(`/teams`);
+      dispatch(setValuesTeams({ key: "conferences", value: data.response }));
+      setLoadTeams(false);
+    }
   };
 
   return (
@@ -36,7 +45,7 @@ const Teams = () => {
       {loadTeams ? (
         <LoadImg></LoadImg>
       ) : (
-        conferences?.map((conference, idx) => (
+        conferences?.map((conference: IConference, idx: number) => (
           <Stack key={idx} alignItems={"flex-start"} sx={{ mb: "24px" }}>
             <Typography variant="h4" sx={{ my: "24px" }}>
               {conference.name}

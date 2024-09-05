@@ -5,17 +5,20 @@ import MainCard from "components/cards/MainCard";
 import { IInfoPlayer, IInfoTeam } from "interfaces";
 import moment from "moment";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TableRoster from "./TableRoster";
 import SubCard from "components/cards/SubCard";
 import LoadImg from "components/load/Load";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
+import { setValuesTeams } from "store/slice/teams";
 
 const url = process.env.NEXT_PUBLIC_URL ?? "http://localhost:8000/api";
 
 const Team = () => {
   const { teamId } = useParams();
-  const [infoTeam, setInfoTeam] = useState<IInfoTeam | null>(null);
-  const [roster, setRoster] = useState<IInfoPlayer[]>([]);
+  const dispatch = useDispatch();
+  const { team } = useSelector((state: RootState) => state.teams);
   const [load, setLoad] = useState(true);
 
   const bodyPost = {
@@ -23,21 +26,48 @@ const Team = () => {
     year: moment().format("YYYY"),
   };
 
+  const infoTeam = useMemo(() => {
+    return team.infoTeam;
+  }, [team]);
+
+  const roster = useMemo(() => {
+    return team.roster;
+  }, [team]);
+
   useEffect(() => {
-    Promise.all([getInfoTeam(), getRoster()]);
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
+  const fetchData = () => {
+    if (team.teamId === teamId) {
+      setLoad(false);
+    } else {
+      Promise.all([getInfoTeam(), getRoster()]).then((response) => {
+        const [infoTeam, roster] = response;
+        dispatch(
+          setValuesTeams({
+            key: "team",
+            value: {
+              teamId,
+              infoTeam,
+              roster,
+            },
+          })
+        );
+        setLoad(false);
+      });
+    }
+  };
+
   const getRoster = async () => {
     const { response } = await fetchRoster();
-    setRoster(response);
-    setLoad(false);
+    return response;
   };
 
   const getInfoTeam = async () => {
     const { response } = await fetchInfoTeam();
-    setInfoTeam(response);
-    setLoad(false);
+    return response;
   };
 
   const fetchInfoTeam = () => {
