@@ -63,6 +63,7 @@ const NavGroup = ({ item }: { item: IMenu }) => {
               direction={"row"}
               justifyContent={"space-between"}
               alignContent={"center"}
+              sx={{ mb: 1 }}
             >
               {opened && item.title && (
                 <p
