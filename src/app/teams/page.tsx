@@ -1,7 +1,7 @@
 "use client";
 import { Grid, Stack, Typography } from "@mui/material";
 import MainCard from "components/cards/MainCard";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TeamCard from "./TeamCard";
 import LoadImg from "components/load/Load";
 import { axiosService } from "services/axios";
@@ -20,6 +20,10 @@ const Teams = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const fetchConferencias = useMemo(() => {
+    return sessionStorage.getItem("conferences") === "true";
+  }, []);
+
   const getTeams = () => {
     try {
       handleGetTeam();
@@ -30,12 +34,12 @@ const Teams = () => {
 
   const handleGetTeam = async () => {
     setLoadTeams(true);
-    console.log(conferences);
-    if (conferences.length > 0) {
+    if (fetchConferencias) {
       setLoadTeams(false);
     } else {
       const { data } = await axiosService.get(`/teams`);
       dispatch(setValuesTeams({ key: "conferences", value: data.response }));
+      sessionStorage.setItem("conferences", "true");
       setLoadTeams(false);
     }
   };
