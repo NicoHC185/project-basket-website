@@ -12,65 +12,71 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import MainCard from "components/cards/MainCard";
 import { useEffect, useState } from "react";
 import DateComponent from "components/DateComponent";
 import moment, { Moment } from "moment";
-import { IPartidos } from "./dto";
 import { findLogo } from "utils";
+import { FetchService } from "services/fetch";
+import LoadImg from "components/load/Load";
 
-function checkCode(code: string): string {
-  switch (code) {
-    case "bkn":
-      return "brk";
-    case "cha":
-      return "cho";
-    case "phx":
-      return "pho";
-    default:
-      return code || "";
-  }
+interface IDateScore {
+  month: number;
+  day: number;
+  year: number;
+}
+
+interface ITeamScore {
+  codTeam: string;
+  nameTeam: string;
+  score: string;
+}
+
+interface IScoreGame {
+  teamWinner: ITeamScore;
+  teamLoser: ITeamScore;
 }
 
 export default function PartidosNBA() {
-  const [partidos, setPartidos] = useState<IPartidos[]>([]);
+  const [partidos, setPartidos] = useState<IScoreGame[]>([]);
   const [date, setDate] = useState<Moment | null>(moment());
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
-    getPartidosByDate({ date: moment(date).format("YYYY-MM-DD") });
-  }, [date]);
+    handleGetScore(date);
+    // eslint-disable-next-line
+  }, []);
 
-  const getPartidosByDate = ({ date }: { date: string }) => {
-    axios
-      .get(`https://v2.nba.api-sports.io/games?date=${date}`, {
-        headers: {
-          "x-apisports-key": process.env.NEXT_PUBLIC_API_SPORTS,
-        },
-      })
-      .then(({ data }) => {
-        // console.log('RES', data);
-        setPartidos(data.response);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+  const getPartidosByDate = async ({ date }: { date: IDateScore }) => {
+    try {
+      setLoad(true);
+      const { response } = await FetchService.post("score", date);
+      setPartidos(response);
+    } catch (error) {
+      console.log(error);
+      throw new Error(`${error}`);
+    } finally {
+      setLoad(false);
+    }
   };
 
-  const statusGame = (status: { halftime: boolean; long: string }) => {
-    if (status.halftime) {
-      return "Halftime";
-    }
-    return status.long;
-    //     halftime:
-    // false
+  const handleGetScore = (date: any | Moment) => {
+    const day = date.format("DD");
+    const month = date.format("MM");
+    const year = date.format("YYYY");
+    getPartidosByDate({
+      date: {
+        day,
+        month,
+        year,
+      },
+    });
   };
 
-  const isPlaysOff = (league: string) => {
-    if (league === "standard") {
-      return false;
+  const handleChangeDate = (date: Moment | null) => {
+    if (date) {
+      handleGetScore(date);
     }
-    return true;
   };
 
   return (
@@ -81,78 +87,65 @@ export default function PartidosNBA() {
             value={date}
             handleChange={(value: Moment | null) => {
               setDate(value);
+              handleChangeDate(value);
             }}
           ></DateComponent>
         </Grid>
         <Grid item xs={12}>
-          <TableContainer component={Paper}>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center" colSpan={1}>
-                    Local
-                  </TableCell>
-                  <TableCell align="center" colSpan={1}></TableCell>
-                  <TableCell align="center" colSpan={1}>
-                    Visit
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {partidos.map((row, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell align="center">
-                      <Stack justifyContent={"center"}>
-                        <div>
-                          {findLogo(
-                            checkCode(row.teams.home.code.toLowerCase())
-                          )}
-                        </div>
-                        <Typography>{row.teams.home.name}</Typography>
-                      </Stack>
+          {load ? (
+            <LoadImg></LoadImg>
+          ) : (
+            <TableContainer
+              component={Paper}
+              sx={{
+                backgroundColor: "primary.light",
+              }}
+            >
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center" colSpan={1}>
+                      Winner
                     </TableCell>
-                    <TableCell align="center">
-                      <Grid
-                        container
-                        direction={"column"}
-                        justifyContent={"center"}
-                        spacing={0.5}
-                      >
-                        {isPlaysOff(row.league) && (
-                          <Grid item>
-                            <Typography>Playoff</Typography>
-                          </Grid>
-                        )}
-                        <Grid item>
-                          <Typography>{`${row.scores.home.points} - ${row.scores.visitors.points}`}</Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography>{statusGame(row.status)}</Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography>{`${row.arena.name} - ${row.arena.city}`}</Typography>
-                        </Grid>
-                      </Grid>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Stack justifyContent={"center"}>
-                        <div>
-                          {findLogo(
-                            checkCode(row.teams.visitors.code).toLowerCase()
-                          )}
-                        </div>
-                        <Typography>{row.teams.visitors.name}</Typography>
-                      </Stack>
+                    <TableCell align="center" colSpan={1}></TableCell>
+                    <TableCell align="center" colSpan={1}>
+                      Loser
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {/* <Stack direction={'row'} spacing={50} justifyContent={'center'}>
-          <Typography variant="h4">Local</Typography>
-          <Typography variant="h4">Visita</Typography>
-        </Stack> */}
+                </TableHead>
+                <TableBody>
+                  {partidos.map((row, idx) => (
+                    <TableRow key={idx}>
+                      <TableCell align="center">
+                        <Stack justifyContent={"center"}>
+                          <div>{findLogo(row.teamWinner.codTeam)}</div>
+                          <Typography>{row.teamWinner.nameTeam}</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Grid
+                          container
+                          direction={"column"}
+                          justifyContent={"center"}
+                          spacing={0.5}
+                        >
+                          <Grid item>
+                            <Typography>{`${row.teamWinner.score} - ${row.teamLoser.score}`}</Typography>
+                          </Grid>
+                        </Grid>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Stack justifyContent={"center"}>
+                          <div>{findLogo(row.teamLoser.codTeam)}</div>
+                          <Typography>{row.teamLoser.nameTeam}</Typography>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </Grid>
       </Grid>
     </MainCard>
