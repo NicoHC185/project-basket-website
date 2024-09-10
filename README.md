@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Data Basketball - Project Frontend
 
-## Getting Started
+This is a project about basketball with studies purpose using the framework Next js with Typescript, Redux and SASS.
 
-First, run the development server:
+You can clone the repository or, if you want to see it, you can click this [link](https://project-basket-website.vercel.app), where it has been deployed using Vercel platform, the request maybe take about 1 minute because i'm using a vercel serverless function with a free account <img src="https://github.githubassets.com/images/icons/emoji/sweat_smile.png" width="2%">
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![teamsView](public/sceenshots/teamsView.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation and Setup instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Installation:
 
-## Learn More
+`npm install`
 
-To learn more about Next.js, take a look at the following resources:
+To Run Test Suite:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`npm test`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To Start Server:
 
-## Deploy on Vercel
+`npm start`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To Visit App:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`localhost:3000`
