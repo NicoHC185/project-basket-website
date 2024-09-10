@@ -11,7 +11,7 @@ You can clone the repository or, if you want to see it, you can click this [link
 Clone down this repository. You will need `node` and `npm` installed globally on your machine.
 
 Pre-Requisite:
-- Start up a server in the local machine listening in the port 8000
+- Start a server on the local machine listening on the port 8000
 
 Installation:
 
