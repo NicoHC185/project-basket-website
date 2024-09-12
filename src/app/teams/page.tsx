@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setValuesTeams } from "store/slice/teams";
 import { RootState } from "store";
 import { IConference } from "interfaces";
+import ErrorViewComponent from "components/ErrorView";
 
 const Teams = () => {
   const { conferences } = useSelector((state: RootState) => state.teams);
   const dispatch = useDispatch();
   const [loadTeams, setLoadTeams] = useState(true);
+  const [errorLoad, setErrorLoad] = useState(false);
 
   useEffect(() => {
     getTeams();
@@ -37,10 +39,15 @@ const Teams = () => {
     if (fetchConferencias) {
       setLoadTeams(false);
     } else {
-      const { data } = await axiosService.get(`/teams`);
-      dispatch(setValuesTeams({ key: "conferences", value: data.response }));
-      sessionStorage.setItem("conferences", "true");
-      setLoadTeams(false);
+      try {
+        const { data } = await axiosService.get(`/teams`);
+        dispatch(setValuesTeams({ key: "conferences", value: data.response }));
+        sessionStorage.setItem("conferences", "true");
+      } catch (err) {
+        setErrorLoad(true);
+      } finally {
+        setLoadTeams(false);
+      }
     }
   };
 
@@ -48,6 +55,8 @@ const Teams = () => {
     <MainCard title="Teams">
       {loadTeams ? (
         <LoadImg></LoadImg>
+      ) : errorLoad ? (
+        <ErrorViewComponent></ErrorViewComponent>
       ) : (
         conferences?.map((conference: IConference, idx: number) => (
           <Stack key={idx} alignItems={"flex-start"} sx={{ mb: "24px" }}>

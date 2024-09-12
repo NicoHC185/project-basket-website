@@ -12,6 +12,7 @@ import LoadImg from "components/load/Load";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { setValuesTeams } from "store/slice/teams";
+import ErrorViewComponent from "components/ErrorView";
 
 const url = process.env.NEXT_PUBLIC_URL ?? "http://localhost:8000/api";
 
@@ -20,6 +21,7 @@ const Team = () => {
   const dispatch = useDispatch();
   const { team } = useSelector((state: RootState) => state.teams);
   const [load, setLoad] = useState(true);
+  const [errorLoad, setErrorLoad] = useState(false);
 
   const bodyPost = {
     codeTeam: String(teamId).toUpperCase(),
@@ -43,20 +45,26 @@ const Team = () => {
     if (team.teamId === teamId) {
       setLoad(false);
     } else {
-      Promise.all([getInfoTeam(), getRoster()]).then((response) => {
-        const [infoTeam, roster] = response;
-        dispatch(
-          setValuesTeams({
-            key: "team",
-            value: {
-              teamId,
-              infoTeam,
-              roster,
-            },
-          })
-        );
-        setLoad(false);
-      });
+      Promise.all([getInfoTeam(), getRoster()])
+        .then((response) => {
+          const [infoTeam, roster] = response;
+          dispatch(
+            setValuesTeams({
+              key: "team",
+              value: {
+                teamId,
+                infoTeam,
+                roster,
+              },
+            })
+          );
+        })
+        .catch(() => {
+          setErrorLoad(true);
+        })
+        .finally(() => {
+          setLoad(false);
+        });
     }
   };
 
@@ -106,6 +114,8 @@ const Team = () => {
     <MainCard title={infoTeam?.name}>
       {load ? (
         <LoadImg></LoadImg>
+      ) : errorLoad ? (
+        <ErrorViewComponent></ErrorViewComponent>
       ) : (
         <>
           <SubCard title="Info team">

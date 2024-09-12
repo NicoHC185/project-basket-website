@@ -19,6 +19,7 @@ import moment, { Moment } from "moment";
 import { findLogo } from "utils";
 import { FetchService } from "services/fetch";
 import LoadImg from "components/load/Load";
+import ErrorViewComponent from "components/ErrorView";
 
 interface IDateScore {
   month: number;
@@ -41,6 +42,7 @@ export default function PartidosNBA() {
   const [partidos, setPartidos] = useState<IScoreGame[]>([]);
   const [date, setDate] = useState<Moment | null>(moment());
   const [load, setLoad] = useState(true);
+  const [errorLoad, setErrorLoad] = useState(false);
 
   useEffect(() => {
     handleGetScore(date);
@@ -54,6 +56,7 @@ export default function PartidosNBA() {
       setPartidos(response);
     } catch (error) {
       console.log(error);
+      setErrorLoad(true);
       throw new Error(`${error}`);
     } finally {
       setLoad(false);
@@ -94,7 +97,9 @@ export default function PartidosNBA() {
         <Grid item xs={12}>
           {load ? (
             <LoadImg></LoadImg>
-          ) : (
+          ) : errorLoad ? (
+            <ErrorViewComponent></ErrorViewComponent>
+          ) : partidos.length > 0 ? (
             <TableContainer
               component={Paper}
               sx={{
@@ -145,6 +150,8 @@ export default function PartidosNBA() {
                 </TableBody>
               </Table>
             </TableContainer>
+          ) : (
+            <Typography>No games for the date</Typography>
           )}
         </Grid>
       </Grid>
